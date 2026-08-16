@@ -1,0 +1,53 @@
+.wrap {
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  padding: 24px;
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: min(420px, 100%);
+  padding: 32px;
+}
+
+.panel__brand {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: flex-start;
+  margin-bottom: 4px;
+}
+
+.panel__mark {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  margin-bottom: 8px;
+  border-radius: 12px;
+  background: var(--navy);
+  color: #fff;
+  font-family: var(--font-en);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+.panel h1 {
+  font-size: 20px;
+}
+
+.row-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+button[type='submit'] {
+  justify-content: center;
+  margin-top: 4px;
+  padding-block: 11px;
+}

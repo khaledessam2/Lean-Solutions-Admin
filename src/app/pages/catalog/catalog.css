@@ -1,0 +1,217 @@
+.head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.head h1 {
+  margin-bottom: 2px;
+}
+
+.tools {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 14px;
+  margin-bottom: 16px;
+}
+
+.tools input[type='search'] {
+  flex: 1;
+  min-width: 180px;
+}
+
+.tabs {
+  display: flex;
+  gap: 4px;
+}
+
+.tab {
+  padding: 7px 14px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: none;
+  color: var(--muted);
+  font-size: 13.5px;
+  white-space: nowrap;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
+}
+
+.tab:hover {
+  background: var(--canvas);
+  color: var(--ink);
+}
+
+.tab--on {
+  background: var(--navy);
+  color: #fff;
+}
+
+/* --- listing ------------------------------------------------------------- */
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 14px;
+  transition: box-shadow 0.15s ease;
+}
+
+.item:hover {
+  box-shadow: var(--shadow-lg);
+}
+
+.item--off {
+  background: var(--canvas);
+}
+
+.item--off .item__thumb,
+.item--off h3 {
+  opacity: 0.6;
+}
+
+.item__order {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  color: var(--faint);
+  font-size: 12px;
+}
+
+.item__order .btn {
+  min-width: 26px;
+  padding: 1px 6px;
+  justify-content: center;
+}
+
+.item__thumb {
+  flex: none;
+  width: 54px;
+  height: 54px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--soft);
+  object-fit: contain;
+}
+
+.item__body {
+  flex: 1;
+  min-width: 0;
+  color: inherit;
+}
+
+.item__body h3 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.item__en {
+  overflow: hidden;
+  color: var(--muted);
+  font-family: var(--font-en);
+  font-size: 13px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.item__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 5px;
+}
+
+.item__slug {
+  color: var(--faint);
+  font-family: var(--font-en);
+  font-size: 12px;
+}
+
+.item__tools {
+  display: flex;
+  flex: none;
+  gap: 4px;
+}
+
+.empty {
+  padding: 32px;
+  color: var(--muted);
+  text-align: center;
+}
+
+/* --- edit screen --------------------------------------------------------- */
+
+.editor {
+  max-width: 940px;
+}
+
+.crumb {
+  display: inline-block;
+  margin-bottom: 10px;
+  color: var(--muted);
+  font-size: 13.5px;
+}
+
+.crumb:hover {
+  color: var(--orange);
+}
+
+.section {
+  padding: 22px 24px;
+  margin-bottom: 16px;
+}
+
+.section > h2 {
+  padding-bottom: 14px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--line);
+}
+
+.section__note {
+  margin: -10px 0 18px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+/* the save bar follows you down a long form */
+.bar {
+  position: sticky;
+  bottom: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 20px;
+  margin-top: 20px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--shadow-lg);
+}
+
+.bar__state {
+  color: var(--muted);
+  font-size: 13.5px;
+}
+
+.bar__state--dirty {
+  color: var(--warn);
+}
+
+.bar__state--saved {
+  color: var(--ok);
+}

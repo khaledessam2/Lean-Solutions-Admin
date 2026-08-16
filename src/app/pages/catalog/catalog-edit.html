@@ -1,0 +1,52 @@
+<div class="editor">
+  <a class="crumb" [routerLink]="backLink()">← رجوع لـ{{ isServices() ? 'الخدمات' : 'المشاريع' }}</a>
+  <h1>{{ heading() }}</h1>
+
+  @if (error(); as message) {
+    <p class="notice notice--error">{{ message }}</p>
+  }
+
+  @if (loading()) {
+    <p class="muted">جاري التحميل…</p>
+  } @else if (model(); as model) {
+    <section class="section card">
+      <h2>الكرت</h2>
+      <p class="section__note">ده اللي بيظهر في قائمة {{ isServices() ? 'الخدمات' : 'المشاريع' }}.</p>
+      <app-fields [fields]="cardFields()" [model]="model" (changed)="touch()" />
+    </section>
+
+    <section class="section card">
+      <h2>صفحة التفاصيل</h2>
+      <p class="section__note">
+        @if (isServices()) {
+          بتظهر على /services/{{ model['slug'] || '…' }} — سيبها فاضية لو الخدمة من غير صفحة.
+        } @else {
+          بتظهر على /projects/{{ model['slug'] || '…' }} — سيبها فاضية لو المشروع من غير صفحة.
+        }
+      </p>
+      <app-fields [fields]="detailFields()" [model]="detail()" (changed)="touch()" />
+    </section>
+
+    <div class="bar">
+      <button type="button" class="btn btn--primary" [disabled]="saving() || !dirty()" (click)="save()">
+        {{ saving() ? 'جاري الحفظ…' : 'حفظ' }}
+      </button>
+
+      <span
+        class="bar__state"
+        [class.bar__state--dirty]="dirty()"
+        [class.bar__state--saved]="saved()">
+        @if (dirty()) {
+          فيه تعديلات لسه متحفظتش
+        } @else if (saved()) {
+          اتحفظ ✓
+        } @else {
+          مفيش تعديلات
+        }
+      </span>
+
+      <span class="spacer"></span>
+      <span class="muted">الحفظ بيروح على قاعدة البيانات — اضغط «نشر التغييرات» عشان يبان على الموقع.</span>
+    </div>
+  }
+</div>

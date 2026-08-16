@@ -1,0 +1,41 @@
+.editor {
+  max-width: 940px;
+}
+
+.where {
+  margin: 2px 0 18px;
+  color: var(--muted);
+  font-size: 13.5px;
+}
+
+.section {
+  padding: 24px;
+}
+
+.bar {
+  position: sticky;
+  bottom: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 20px;
+  margin-top: 20px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--shadow-lg);
+}
+
+.bar__state {
+  color: var(--muted);
+  font-size: 13.5px;
+}
+
+.bar__state--dirty {
+  color: var(--warn);
+}
+
+.bar__state--saved {
+  color: var(--ok);
+}

@@ -1,0 +1,211 @@
+@for (field of fields(); track field.key) {
+  <div class="field" [class.field--block]="field.kind === 'group' || field.kind === 'list'">
+    @switch (field.kind) {
+      <!-- one string in both languages -->
+      @case ('text') {
+        <label [for]="field.key + '-ar'">{{ field.label }}</label>
+        @if (field.hint) {
+          <p class="hint">{{ field.hint }}</p>
+        }
+        <div class="pair">
+          <div class="pair__side">
+            <span class="pair__lang">عربي</span>
+            @if (field.rows) {
+              <textarea
+                [id]="field.key + '-ar'"
+                [rows]="field.rows"
+                [value]="bilingual(field).ar"
+                (input)="setLang(field, 'ar', $any($event.target).value)"></textarea>
+            } @else {
+              <input
+                type="text"
+                [id]="field.key + '-ar'"
+                [value]="bilingual(field).ar"
+                (input)="setLang(field, 'ar', $any($event.target).value)" />
+            }
+          </div>
+          <div class="pair__side" dir="ltr">
+            <span class="pair__lang">English</span>
+            @if (field.rows) {
+              <textarea
+                [rows]="field.rows"
+                [value]="bilingual(field).en"
+                (input)="setLang(field, 'en', $any($event.target).value)"></textarea>
+            } @else {
+              <input
+                type="text"
+                [value]="bilingual(field).en"
+                (input)="setLang(field, 'en', $any($event.target).value)" />
+            }
+          </div>
+        </div>
+      }
+
+      <!-- a single-language string: a path, a slug, a URL -->
+      @case ('string') {
+        <label [for]="field.key">{{ field.label }}</label>
+        @if (field.hint) {
+          <p class="hint">{{ field.hint }}</p>
+        }
+        <input
+          type="text"
+          dir="ltr"
+          [id]="field.key"
+          [value]="value(field) ?? ''"
+          (input)="setString(field, $any($event.target).value)" />
+      }
+
+      @case ('number') {
+        <label [for]="field.key">{{ field.label }}</label>
+        @if (field.hint) {
+          <p class="hint">{{ field.hint }}</p>
+        }
+        <input
+          type="number"
+          step="any"
+          dir="ltr"
+          class="narrow"
+          [id]="field.key"
+          [value]="value(field) ?? 0"
+          (input)="setNumber(field, $any($event.target).value)" />
+      }
+
+      @case ('boolean') {
+        <label class="check">
+          <input
+            type="checkbox"
+            [checked]="!!value(field)"
+            (change)="set(field, $any($event.target).checked)" />
+          <span>{{ field.label }}</span>
+        </label>
+        @if (field.hint) {
+          <p class="hint hint--indent">{{ field.hint }}</p>
+        }
+      }
+
+      @case ('select') {
+        <label [for]="field.key">{{ field.label }}</label>
+        <select
+          class="narrow"
+          [id]="field.key"
+          [value]="value(field) ?? ''"
+          (change)="set(field, $any($event.target).value)">
+          @for (option of field.options; track option.value) {
+            <option [value]="option.value">{{ option.label }}</option>
+          }
+        </select>
+      }
+
+      <!-- a path into the media bucket -->
+      @case ('media') {
+        <label [for]="field.key">{{ field.label }}</label>
+        @if (field.hint) {
+          <p class="hint">{{ field.hint }}</p>
+        }
+        <div class="media">
+          @if (isImage(value(field))) {
+            <img class="media__thumb" [src]="preview(value(field))" alt="" loading="lazy" />
+          } @else {
+            <span class="media__thumb media__thumb--none">—</span>
+          }
+          <input
+            type="text"
+            dir="ltr"
+            [id]="field.key"
+            [value]="value(field) ?? ''"
+            (input)="setString(field, $any($event.target).value)" />
+          <app-media-picker (picked)="set(field, $event)" />
+        </div>
+      }
+
+      <!-- a repeatable list of bilingual strings -->
+      @case ('textList') {
+        <div class="list__head">
+          <label>{{ field.label }}</label>
+          <span class="muted">{{ items(field).length }}</span>
+        </div>
+        @if (field.hint) {
+          <p class="hint">{{ field.hint }}</p>
+        }
+
+        <div class="list">
+          @for (item of items(field); track $index) {
+            <div class="list__row">
+              <span class="list__no">{{ $index + 1 }}</span>
+              <div class="pair pair--tight">
+                <div class="pair__side">
+                  <textarea
+                    [rows]="field.rows ?? 2"
+                    [value]="item.ar"
+                    (input)="item.ar = $any($event.target).value; bubble()"></textarea>
+                </div>
+                <div class="pair__side" dir="ltr">
+                  <textarea
+                    [rows]="field.rows ?? 2"
+                    [value]="item.en"
+                    (input)="item.en = $any($event.target).value; bubble()"></textarea>
+                </div>
+              </div>
+              <div class="list__tools">
+                <button type="button" class="btn btn--quiet" (click)="move(field, $index, -1)" [disabled]="$first" title="لفوق">↑</button>
+                <button type="button" class="btn btn--quiet" (click)="move(field, $index, 1)" [disabled]="$last" title="لتحت">↓</button>
+                <button type="button" class="btn btn--quiet btn--danger" (click)="removeAt(field, $index)" title="حذف">✕</button>
+              </div>
+            </div>
+          } @empty {
+            <p class="empty">مفيش عناصر لسه.</p>
+          }
+        </div>
+
+        <button type="button" class="btn btn--ghost btn--sm" (click)="add(field)">+ إضافة</button>
+      }
+
+      <!-- a fixed nested object -->
+      @case ('group') {
+        <fieldset class="group">
+          <legend>{{ field.label }}</legend>
+          <app-fields [fields]="field.fields" [model]="group(field)" (changed)="bubble()" />
+        </fieldset>
+      }
+
+      <!-- a repeatable list of objects -->
+      @case ('list') {
+        <div class="list__head">
+          <label>{{ field.label }}</label>
+          <span class="muted">{{ items(field).length }}</span>
+        </div>
+
+        <div class="rows">
+          @for (row of items(field); track $index) {
+            <div class="rows__item" [class.rows__item--open]="isOpen(field, $index)">
+              <div class="rows__bar">
+                <button type="button" class="rows__toggle" (click)="toggle(field, $index)">
+                  <span class="rows__caret" [class.rows__caret--open]="isOpen(field, $index)">›</span>
+                  <span class="rows__no">{{ $index + 1 }}</span>
+                  <span class="rows__title">{{ rowTitle(field, row, $index) }}</span>
+                </button>
+                <div class="list__tools">
+                  <button type="button" class="btn btn--quiet" (click)="move(field, $index, -1)" [disabled]="$first" title="لفوق">↑</button>
+                  <button type="button" class="btn btn--quiet" (click)="move(field, $index, 1)" [disabled]="$last" title="لتحت">↓</button>
+                  <button type="button" class="btn btn--quiet btn--danger" (click)="removeAt(field, $index)" title="حذف">✕</button>
+                </div>
+              </div>
+
+              @if (isOpen(field, $index)) {
+                <div class="rows__body">
+                  <app-fields [fields]="field.fields" [model]="row" (changed)="bubble()" />
+                </div>
+              }
+            </div>
+          } @empty {
+            <p class="empty">مفيش عناصر لسه.</p>
+          }
+        </div>
+
+        <button type="button" class="btn btn--ghost btn--sm" (click)="add(field)">
+          + {{ field.addLabel ?? 'إضافة' }}
+        </button>
+      }
+    }
+  </div>
+}

@@ -1,0 +1,59 @@
+<button type="button" class="btn btn--ghost btn--sm" (click)="show()">اختر ملف</button>
+
+@if (open()) {
+  <div class="scrim" (click)="hide()"></div>
+
+  <div class="sheet card" role="dialog" aria-label="مكتبة الملفات">
+    <div class="sheet__head">
+      <h3>مكتبة الملفات</h3>
+      <button type="button" class="btn btn--quiet" (click)="hide()">✕</button>
+    </div>
+
+    <div class="sheet__tools">
+      <input
+        type="search"
+        placeholder="ابحث بالاسم…"
+        [value]="query()"
+        (input)="query.set($any($event.target).value)" />
+
+      <label class="upload btn btn--ghost btn--sm">
+        <span>{{ uploading() ? 'جاري الرفع…' : 'رفع ملف' }}</span>
+        <input type="file" hidden [disabled]="uploading()" (change)="upload($event)" />
+      </label>
+
+      <select [value]="folder()" (change)="folder.set($any($event.target).value)" title="المجلد">
+        @for (name of folders; track name) {
+          <option [value]="name">{{ name }}/</option>
+        }
+      </select>
+    </div>
+
+    @if (error(); as message) {
+      <p class="notice notice--error">{{ message }}</p>
+    }
+
+    <div class="sheet__body">
+      @if (loading()) {
+        <p class="muted">جاري التحميل…</p>
+      } @else {
+        <div class="grid">
+          @for (file of visible(); track file.path) {
+            <button type="button" class="tile" (click)="choose(file.path)" [title]="file.path">
+              @if (isImage(file.path)) {
+                <img [src]="file.url" alt="" loading="lazy" />
+              } @else {
+                <span class="tile__ext">{{ file.name.split('.').pop() }}</span>
+              }
+              <span class="tile__name" dir="ltr">{{ file.path }}</span>
+            </button>
+          } @empty {
+            <p class="muted">
+              مفيش ملفات. ارفع ملف جديد، أو سيب المسار زي ما هو لو الملف موجود في مجلد
+              <code>public/</code> بتاع الموقع.
+            </p>
+          }
+        </div>
+      }
+    </div>
+  </div>
+}

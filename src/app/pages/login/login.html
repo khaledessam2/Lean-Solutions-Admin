@@ -1,0 +1,41 @@
+<div class="wrap">
+  <form class="card panel" (submit)="submit($event)">
+    <div class="panel__brand">
+      <span class="panel__mark">LBS</span>
+      <h1>لوحة تحكم الموقع</h1>
+      <p class="muted">سجّل دخولك عشان تعدّل محتوى لين بيزنس سوليشنز.</p>
+    </div>
+
+    @if (error(); as message) {
+      <p class="notice notice--error">{{ message }}</p>
+    }
+
+    <div class="row-field">
+      <label for="email">البريد الإلكتروني</label>
+      <input
+        id="email"
+        type="email"
+        dir="ltr"
+        autocomplete="username"
+        required
+        [value]="email()"
+        (input)="email.set($any($event.target).value)" />
+    </div>
+
+    <div class="row-field">
+      <label for="password">كلمة المرور</label>
+      <input
+        id="password"
+        type="password"
+        dir="ltr"
+        autocomplete="current-password"
+        required
+        [value]="password()"
+        (input)="password.set($any($event.target).value)" />
+    </div>
+
+    <button type="submit" class="btn btn--primary" [disabled]="busy()">
+      {{ busy() ? 'جاري الدخول…' : 'دخول' }}
+    </button>
+  </form>
+</div>

@@ -1,0 +1,57 @@
+<header class="head">
+  <div>
+    <h1>الملفات والصور</h1>
+    <p class="muted">{{ files().length }} ملف — دوس على أي ملف عشان تنسخ مساره.</p>
+  </div>
+
+  <label class="btn btn--primary">
+    <span>{{ uploading() ? 'جاري الرفع…' : 'رفع ملفات' }}</span>
+    <input type="file" hidden multiple [disabled]="uploading()" (change)="upload($event)" />
+  </label>
+</header>
+
+@if (error(); as message) {
+  <p class="notice notice--error">{{ message }}</p>
+}
+
+<div class="tools card">
+  <input
+    type="search"
+    placeholder="ابحث بالمسار…"
+    [value]="query()"
+    (input)="query.set($any($event.target).value)" />
+
+  <label class="folder">
+    <span class="muted">الرفع في مجلد</span>
+    <select [value]="folder()" (change)="folder.set($any($event.target).value)">
+      @for (name of folders; track name) {
+        <option [value]="name">{{ name }}/</option>
+      }
+    </select>
+  </label>
+</div>
+
+@if (loading()) {
+  <p class="muted">جاري التحميل…</p>
+} @else {
+  <div class="grid">
+    @for (file of visible(); track file.path) {
+      <button type="button" class="tile card" (click)="copy(file.path)" [title]="file.path">
+        @if (isImage(file.path)) {
+          <img [src]="file.url" alt="" loading="lazy" />
+        } @else {
+          <span class="tile__ext">{{ file.name.split('.').pop() }}</span>
+        }
+        <span class="tile__name" dir="ltr">{{ file.path }}</span>
+        @if (copied() === file.path) {
+          <span class="tile__copied">اتنسخ ✓</span>
+        }
+      </button>
+    } @empty {
+      <p class="empty card">
+        المكتبة فاضية. الصور الحالية للموقع موجودة في مجلد <code>public/</code> بتاعه، وده
+        للملفات الجديدة اللي هتضيفها من هنا.
+      </p>
+    }
+  </div>
+}

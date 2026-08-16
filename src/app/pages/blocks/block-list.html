@@ -1,0 +1,29 @@
+<header class="head">
+  <div>
+    <h1>نصوص الموقع</h1>
+    <p class="muted">كل النصوص الثابتة — العناوين، الأزرار، رسائل الأخطاء، وبيانات السيو.</p>
+  </div>
+</header>
+
+@if (error(); as message) {
+  <p class="notice notice--error">{{ message }}</p>
+}
+
+@for (group of groups; track group.section) {
+  <section class="group">
+    <h2>{{ group.title }}</h2>
+    <div class="grid">
+      @for (key of group.keys; track key) {
+        @if (schema(key); as block) {
+          <a class="block card" [routerLink]="[key]">
+            <h3>{{ block.label }}</h3>
+            <p class="muted">{{ block.where }}</p>
+            @if (missing(key)) {
+              <span class="tag tag--off">مش موجود في قاعدة البيانات</span>
+            }
+          </a>
+        }
+      }
+    </div>
+  </section>
+}

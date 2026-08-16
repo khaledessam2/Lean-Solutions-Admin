@@ -1,0 +1,52 @@
+@if (!ready()) {
+  <div class="boot">
+    <div class="boot__spinner"></div>
+    <p class="muted">جاري الاتصال…</p>
+  </div>
+} @else if (failure(); as message) {
+  <div class="boot">
+    <div class="boot__card card">
+      <h2>مش قادر أبدأ</h2>
+      <p class="notice notice--error">{{ message }}</p>
+      <p class="muted">
+        شغّل الأدمن بأمر <code>npm start</code> من مجلد <code>lean-admin</code>، وتأكد إن ملف
+        <code>.env</code> فيه بيانات Supabase.
+      </p>
+    </div>
+  </div>
+} @else if (!signedIn()) {
+  <router-outlet />
+} @else {
+  <div class="shell">
+    <aside class="side">
+      <div class="side__brand">
+        <span class="side__mark">LBS</span>
+        <div>
+          <strong>لوحة التحكم</strong>
+          <span class="muted">لين بيزنس سوليشنز</span>
+        </div>
+      </div>
+
+      <nav class="side__nav">
+        @for (group of groups; track group.title) {
+          <p class="side__label">{{ group.title }}</p>
+          @for (link of group.links; track link.path) {
+            <a
+              class="side__link"
+              [routerLink]="link.path"
+              routerLinkActive="side__link--on">{{ link.label }}</a>
+          }
+        }
+      </nav>
+
+      <div class="side__foot">
+        <p class="side__user" [title]="user()?.email ?? ''">{{ user()?.email }}</p>
+        <button type="button" class="btn btn--quiet" (click)="signOut()">تسجيل الخروج</button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <router-outlet />
+    </main>
+  </div>
+}

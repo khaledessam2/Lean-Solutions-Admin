@@ -1,0 +1,40 @@
+<div class="editor">
+  <h1>بيانات الشركة</h1>
+  <p class="where">
+    البيانات دي بتظهر في الفوتر وبطاقة التواصل، وبتدخل في كل روابط وبيانات السيو.
+  </p>
+
+  @if (error(); as message) {
+    <p class="notice notice--error">{{ message }}</p>
+  }
+
+  @if (loading()) {
+    <p class="muted">جاري التحميل…</p>
+  } @else if (model(); as model) {
+    <section class="section card">
+      <app-fields [fields]="fields" [model]="model" (changed)="touch()" />
+    </section>
+
+    <div class="bar">
+      <button type="button" class="btn btn--primary" [disabled]="saving() || !dirty()" (click)="save()">
+        {{ saving() ? 'جاري الحفظ…' : 'حفظ' }}
+      </button>
+
+      <span
+        class="bar__state"
+        [class.bar__state--dirty]="dirty()"
+        [class.bar__state--saved]="saved()">
+        @if (dirty()) {
+          فيه تعديلات لسه متحفظتش
+        } @else if (saved()) {
+          اتحفظ ✓
+        } @else {
+          مفيش تعديلات
+        }
+      </span>
+
+      <span class="spacer"></span>
+      <span class="muted">اضغط «نشر التغييرات» عشان يبان على الموقع.</span>
+    </div>
+  }
+</div>
