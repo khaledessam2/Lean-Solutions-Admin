@@ -54,12 +54,6 @@
         },
         "serve": {
           "builder": "@angular/build:dev-server",
-          "options": {
-            "port": 4300,
-            "open": true,
-            "allowedHosts": true,
-            "host": "0.0.0.0"
-          },
           "configurations": {
             "production": {
               "buildTarget": "lean-admin:build:production"
