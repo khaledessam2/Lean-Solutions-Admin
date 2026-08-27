@@ -96,8 +96,17 @@ export class Content {
   }
 
   async saveBlock(key: string, data: unknown): Promise<void> {
-    const { error } = await this.db.from('content_blocks').update({ data }).eq('key', key);
+    const { data: rows, error } = await this.db
+      .from('content_blocks')
+      .update({ data })
+      .eq('key', key)
+      .select('key');
+
     if (error) throw new Error(describe(error.message));
+    // `.select()` is what makes a refused write visible: row-level security
+    // hides the row from the update instead of raising, so without it Supabase
+    // reports success on nothing at all
+    if (!rows?.length) throw new Error(DENIED);
   }
 
   // -------------------------------------------------------------------------
@@ -145,19 +154,21 @@ export class Content {
   }
 
   async remove(table: 'services' | 'projects', id: string): Promise<void> {
-    const { error } = await this.db.from(table).delete().eq('id', id);
+    const { data, error } = await this.db.from(table).delete().eq('id', id).select('id');
     if (error) throw new Error(describe(error.message));
+    if (!data?.length) throw new Error(DENIED);
   }
 
   /** persists a new order after a drag, as one call per moved row */
   async reorder(table: 'services' | 'projects', ids: string[]): Promise<void> {
     const updates = ids.map((id, index) =>
-      this.db.from(table).update({ sort_order: index }).eq('id', id),
+      this.db.from(table).update({ sort_order: index }).eq('id', id).select('id'),
     );
 
     const results = await Promise.all(updates);
     const failed = results.find((r) => r.error);
     if (failed?.error) throw new Error(describe(failed.error.message));
+    if (results.some((r) => !r.data?.length)) throw new Error(DENIED);
   }
 
   /** the next free sort_order, so a new row lands at the end of the list */
@@ -181,8 +192,14 @@ export class Content {
   }
 
   async saveSettings(row: Record<string, unknown>): Promise<void> {
-    const { error } = await this.db.from('site_settings').update(row).eq('id', 1);
+    const { data, error } = await this.db
+      .from('site_settings')
+      .update(row)
+      .eq('id', 1)
+      .select('id');
+
     if (error) throw new Error(describe(error.message));
+    if (!data?.length) throw new Error(DENIED);
   }
 
   // -------------------------------------------------------------------------
@@ -225,7 +242,16 @@ export class Content {
   }
 }
 
-/** turn the two failures that actually happen into something actionable */
+/**
+ * What a write that touched no rows means in practice. Row-level security does
+ * not raise on an update or a delete it refuses — it just hides the row — so
+ * this is the message for a call that came back clean but changed nothing.
+ */
+const DENIED =
+  'الحفظ محصلش — محتاج صلاحية أدمن. ضيف حسابك في جدول admins — الطريقة مكتوبة في آخر ' +
+  'ملف supabase/schema.sql.';
+
+/** turn the failures that actually happen into something actionable */
 function describe(message: string): string {
   if (/row-level security|violates row-level/i.test(message)) {
     return (
@@ -235,6 +261,11 @@ function describe(message: string): string {
   }
   if (/duplicate key|unique constraint/i.test(message)) {
     return 'المعرّف ده مستخدم قبل كده. اختار معرّف تاني.';
+  }
+  // PGRST116: `.single()` got no row back — the same refusal as DENIED, seen
+  // through the insert/update path that does ask for the row
+  if (/PGRST116|multiple \(or no\) rows|0 rows/i.test(message)) {
+    return DENIED;
   }
   return message;
 }

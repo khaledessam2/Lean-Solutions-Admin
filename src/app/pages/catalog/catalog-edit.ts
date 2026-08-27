@@ -142,10 +142,17 @@ export class CatalogEdit implements OnInit {
 
       const id = await this.content.save(this.table(), row);
 
+      // /new and /:id are the same route, so the router keeps this component
+      // alive and never re-runs load() — the new row's id has to land in the
+      // model here, or the next save inserts a second copy instead of updating
+      const wasNew = this.isNew();
+      model['id'] = id;
+      this.model.set({ ...model });
+
       this.dirty.set(false);
       this.saved.set(true);
 
-      if (this.isNew()) {
+      if (wasNew) {
         await this.router.navigate([this.table(), id]);
       }
     } catch (error) {
