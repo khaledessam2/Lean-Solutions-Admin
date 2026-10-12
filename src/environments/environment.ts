@@ -1,8 +1,8 @@
 export const environment = {
   production: true,
   supabase: {
-    url: 'https://xqgeaagoetzjluaszygu.supabase.co',
+    url: 'https://iziadhdrktpcbcjanrhm.supabase.co',
     anonKey:
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhxZ2VhYWdvZXR6amx1YXN6eWd1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY1MjU4MDUsImV4cCI6MjEwMjEwMTgwNX0.ff1ABB2ESMRISMNuJW3sv-_1fQGIK7xo_Mak8qKlNiI',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml6aWFkaGRya3RwY2JjamFucmhtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE4MDYwMjEsImV4cCI6MjEwNzM4MjAyMX0.hN7co0N5qh7yLjt51Mnf2QRxWGJqNMgcoxuqVuOSbec',
   },
 };
