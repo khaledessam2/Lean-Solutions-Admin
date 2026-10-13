@@ -101,8 +101,6 @@ export const BLOCK_SCHEMAS: BlockSchema[] = [
     fields: [
       { kind: 'text', key: 'about', label: 'نبذة الشركة', rows: 4 },
       { kind: 'text', key: 'rights', label: 'حقوق النشر' },
-      { kind: 'text', key: 'privacy', label: 'سياسة الخصوصية' },
-      { kind: 'text', key: 'terms', label: 'الشروط والأحكام' },
       {
         kind: 'list',
         key: 'columns',
