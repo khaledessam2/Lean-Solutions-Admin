@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { signedIn, signedOut } from './core/guards';
+import { signedIn, signedOut } from './services/guards';
 
 /**
  * Every screen is lazy — the admin is a local tool, but it keeps the initial
@@ -14,36 +14,36 @@ export const routes: Routes = [
   {
     path: 'services',
     canActivate: [signedIn],
-    loadComponent: () => import('./pages/catalog/catalog-list').then((m) => m.CatalogList),
+    loadComponent: () => import('./pages/catalog/catalog-list/catalog-list').then((m) => m.CatalogList),
     data: { table: 'services' },
   },
   {
     path: 'services/:id',
     canActivate: [signedIn],
-    loadComponent: () => import('./pages/catalog/catalog-edit').then((m) => m.CatalogEdit),
+    loadComponent: () => import('./pages/catalog/catalog-edit/catalog-edit').then((m) => m.CatalogEdit),
     data: { table: 'services' },
   },
   {
     path: 'projects',
     canActivate: [signedIn],
-    loadComponent: () => import('./pages/catalog/catalog-list').then((m) => m.CatalogList),
+    loadComponent: () => import('./pages/catalog/catalog-list/catalog-list').then((m) => m.CatalogList),
     data: { table: 'projects' },
   },
   {
     path: 'projects/:id',
     canActivate: [signedIn],
-    loadComponent: () => import('./pages/catalog/catalog-edit').then((m) => m.CatalogEdit),
+    loadComponent: () => import('./pages/catalog/catalog-edit/catalog-edit').then((m) => m.CatalogEdit),
     data: { table: 'projects' },
   },
   {
     path: 'blocks',
     canActivate: [signedIn],
-    loadComponent: () => import('./pages/blocks/block-list').then((m) => m.BlockList),
+    loadComponent: () => import('./pages/blocks/block-list/block-list').then((m) => m.BlockList),
   },
   {
     path: 'blocks/:key',
     canActivate: [signedIn],
-    loadComponent: () => import('./pages/blocks/block-edit').then((m) => m.BlockEdit),
+    loadComponent: () => import('./pages/blocks/block-edit/block-edit').then((m) => m.BlockEdit),
   },
   {
     path: 'settings',

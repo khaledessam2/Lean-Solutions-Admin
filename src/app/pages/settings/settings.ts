@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
-import { Content } from '../../core/content';
-import { SETTINGS_FIELDS } from '../../core/schema';
+import { Content } from '../../services/content';
+import { SETTINGS_FIELDS } from '../../data/schema';
 import { Fields } from '../../shared/fields/fields';
 
 /**

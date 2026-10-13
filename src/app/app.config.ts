@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { provideRouter, withComponentInputBinding } from '@angular/router';
 import { routes } from './app.routes';
-import { Supabase } from './core/supabase';
+import { Supabase } from './services/supabase';
 
 export const appConfig: ApplicationConfig = {
   providers: [

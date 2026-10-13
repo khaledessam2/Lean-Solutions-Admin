@@ -8,14 +8,9 @@ import {
   signal,
 } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { Content } from '../../core/content';
-import {
-  PROJECT_DETAIL_FIELDS,
-  PROJECT_FIELDS,
-  SERVICE_DETAIL_FIELDS,
-  SERVICE_FIELDS,
-} from '../../core/schema';
-import { Fields } from '../../shared/fields/fields';
+import { Content } from '../../../services/content';
+import { PROJECT_DETAIL_FIELDS, PROJECT_FIELDS, SERVICE_DETAIL_FIELDS, SERVICE_FIELDS } from '../../../data/schema';
+import { Fields } from '../../../shared/fields/fields';
 
 type Table = 'services' | 'projects';
 
@@ -30,7 +25,7 @@ type Table = 'services' | 'projects';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [Fields, RouterLink],
   templateUrl: './catalog-edit.html',
-  styleUrl: './catalog.css',
+  styleUrl: './catalog-edit.css',
 })
 export class CatalogEdit implements OnInit {
   readonly table = input.required<Table>();

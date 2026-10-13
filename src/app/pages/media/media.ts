@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
-import { Content } from '../../core/content';
+import { Content } from '../../services/content';
 
 /**
  * The media bucket, browsable on its own.

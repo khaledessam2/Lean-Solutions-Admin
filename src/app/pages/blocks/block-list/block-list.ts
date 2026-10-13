@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { Content } from '../../core/content';
-import { BLOCK_SCHEMAS } from '../../core/schema';
+import { Content } from '../../../services/content';
+import { BLOCK_SCHEMAS } from '../../../data/schema';
 
 /**
  * Every fixed piece of copy on the site, grouped the way the site is laid out:
@@ -13,7 +13,7 @@ import { BLOCK_SCHEMAS } from '../../core/schema';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterLink],
   templateUrl: './block-list.html',
-  styleUrl: './blocks.css',
+  styleUrl: './block-list.css',
 })
 export class BlockList {
   private readonly content = inject(Content);

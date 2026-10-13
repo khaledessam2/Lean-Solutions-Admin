@@ -8,8 +8,9 @@ import {
   signal,
 } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { Content, ProjectRow, ServiceRow } from '../../core/content';
-import { Supabase } from '../../core/supabase';
+import { ProjectRow, ServiceRow } from '../../../core/content';
+import { Content } from '../../../services/content';
+import { Supabase } from '../../../services/supabase';
 
 type Row = (ServiceRow | ProjectRow) & { icon?: string; image?: string };
 type Table = 'services' | 'projects';
@@ -24,7 +25,7 @@ type Table = 'services' | 'projects';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterLink],
   templateUrl: './catalog-list.html',
-  styleUrl: './catalog.css',
+  styleUrl: './catalog-list.css',
 })
 export class CatalogList implements OnInit {
   /** bound from the route's `data`, via withComponentInputBinding() */

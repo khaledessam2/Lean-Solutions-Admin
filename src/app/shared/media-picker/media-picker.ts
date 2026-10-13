@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, output, signal } from '@angular/core';
-import { Content } from '../../core/content';
+import { Content } from '../../services/content';
 
 /**
  * The button beside every media field: opens the bucket, lets you pick a file

@@ -97,4 +97,3 @@ function translateAuthError(message: string): string {
   }
   return message;
 }
-

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { Supabase } from '../../core/supabase';
+import { Supabase } from '../../services/supabase';
 
 @Component({
   selector: 'app-login',

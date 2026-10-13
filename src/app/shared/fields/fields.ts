@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, input, output, signal } from '@angular/core';
 import { Field } from '../../core/schema';
-import { Supabase } from '../../core/supabase';
+import { Supabase } from '../../services/supabase';
 import { MediaPicker } from '../media-picker/media-picker';
 
 /**

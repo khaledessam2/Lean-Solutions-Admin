@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import { Supabase } from './core/supabase';
+import { Supabase } from './services/supabase';
 
 @Component({
   selector: 'app-root',

@@ -8,9 +8,9 @@ import {
   signal,
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { Content } from '../../core/content';
-import { BLOCK_SCHEMAS } from '../../core/schema';
-import { Fields } from '../../shared/fields/fields';
+import { Content } from '../../../services/content';
+import { BLOCK_SCHEMAS } from '../../../data/schema';
+import { Fields } from '../../../shared/fields/fields';
 
 /** Edits one `content_blocks` row through the schema that describes its shape. */
 @Component({
@@ -18,7 +18,7 @@ import { Fields } from '../../shared/fields/fields';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [Fields, RouterLink],
   templateUrl: './block-edit.html',
-  styleUrl: './blocks.css',
+  styleUrl: './block-edit.css',
 })
 export class BlockEdit implements OnInit {
   readonly key = input.required<string>();
